@@ -28,19 +28,39 @@ if "access_token" in st.query_params:
     start_date = st.date_input("Start Date", datetime(today.year, today.month-1 if today.month != 1 else 12, today.day))
     end_date = st.date_input("End Date", today)
 
+    filter_string = st.text_input("Data Filter", placeholder="Ex. elapsed_time >= moving_time")
+
     start_datetime = datetime(start_date.year, start_date.month, start_date.day)
     end_datetime = datetime(end_date.year, end_date.month, end_date.day)
 
     activities = get_athlete_activities(st.query_params["access_token"], start_datetime, end_datetime, 100)
 
-    cols = ["name", "distance", "moving_time", "elapsed_time", "type", "id", "start_date", "athlete_count", "kudos_count", "average_speed", "max_speed", "pr_count", "total_elevation_gain", "average_cadence", "average_watts", "max_watts", "kilojoules"]
+    cols = ["name", "distance", "moving_time", "elapsed_time", "type", "workout_type", "start_date", "athlete_count", "kudos_count", "average_speed", "max_speed", "pr_count", "total_elevation_gain", "average_cadence", "average_watts", "max_watts", "kilojoules"]
     df = dict_to_df(activities, cols)
+    df = df.sort_values("start_date").reset_index()[[i for i in cols if i in df.columns]]
+
+    # Alter Workout Type
+    df.loc[df["workout_type"] == 0, "workout_type"] = "None"
+    df.loc[df["workout_type"] == 1, "workout_type"] = "Race"
+    df.loc[df["workout_type"] == 2, "workout_type"] = "Long Run"
+    df.loc[df["workout_type"] == 3, "workout_type"] = "Workout"
+
+    st.write(df[df["workout_type"] == None])
+
+    try:
+        if filter_string != "": df = df.query(filter_string)
+    except:
+        st.error("Invalid Data Filter String")
 
     st.subheader("Activity Statistics")
     st.write(df.describe())
 
     st.subheader("Activity Preview")
-    st.write(df.head(10))
+
+    if st.button("Show All"):
+        st.write(df)
+    else:
+        st.write(df.head(10))
 
     st.subheader("Data Visualization (Scatter Plot)")
     scatter_exclude = ["name", "id"]
