@@ -106,7 +106,8 @@ def get_authentication_code(client_id: int, redirect_url: str, streamlit=False):
 
     else:
         #os.system(f"start chrome.exe \"{url}\"")
-        webbrowser.open_new_tab(url)
+        #webbrowser.open_new_tab(url)
+        return url
 
 
 # Gets The Access Token Using the Code From the "get_authorization_code" Function
