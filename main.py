@@ -45,8 +45,6 @@ if "access_token" in st.query_params:
     df.loc[df["workout_type"] == 2, "workout_type"] = "Long Run"
     df.loc[df["workout_type"] == 3, "workout_type"] = "Workout"
 
-    st.write(df[df["workout_type"] == None])
-
     try:
         if filter_string != "": df = df.query(filter_string)
     except:
@@ -68,7 +66,26 @@ if "access_token" in st.query_params:
     scatter_x = st.selectbox("X Axis", [i for i in df.columns if i not in scatter_exclude], 0)
     scatter_y = st.selectbox("Y Axis", [i for i in df.columns if i not in scatter_exclude], 1)
 
-    st.scatter_chart(df, x=scatter_x, y=scatter_y, x_label=scatter_x, y_label=scatter_y)
+    enable_size = st.checkbox("Enable Size")
+
+    if enable_size:
+        scatter_size = st.selectbox("Size", [i for i in df.columns if i not in scatter_exclude], 2)
+
+    enable_color = st.checkbox("Enable Color")
+
+    if enable_color:
+        scatter_color = st.selectbox("Color", [i for i in df.columns if i not in scatter_exclude], 4)
+
+
+    st.scatter_chart(
+        df, 
+        x=scatter_x, 
+        y=scatter_y, 
+        x_label=scatter_x, 
+        y_label=scatter_y, 
+        size=scatter_size if enable_size else None, 
+        color=scatter_color if enable_color else None
+    )
 
     st.subheader("Sample API Response")
     st.write(activities[0])
