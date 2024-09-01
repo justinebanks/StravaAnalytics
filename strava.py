@@ -1,6 +1,4 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from datetime import datetime
-import webbrowser
 import requests
 import pandas as pd
 

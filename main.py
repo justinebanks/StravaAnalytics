@@ -4,21 +4,21 @@ import streamlit as st
 import pandas as pd
 
 
-client_id = 133058
-client_secret = "b14502a349e7fbcbfd435c975e6fa53102859201"
+client_id = st.secrets["client_id"]
+client_secret = st.secrets["client_secret"]
 
 if "code" not in st.query_params and "access_token" not in st.query_params:
-    url = get_authentication_code(client_id, "https://strava-analytics.streamlit.app/", True)
+    url = get_authentication_code(client_id, "https://strava-analytics.streamlit.app", True)
+
     st.title("Strava API Data")
-    st.write("Click the Following Hyper Link To Run Login To Strava with OAuth")
+    st.write("Click the Following Hyper Link To Login To Strava and Access Your Data")
     st.write(f"<a href=\"{url}\">Login To Strava</a>", unsafe_allow_html=True)
 
 
 if "code" in st.query_params and "access_token" not in st.query_params:
     access_token = get_access_token(client_id, client_secret, st.query_params["code"])
-    #st.session_state["access_token"] = access_token
     st.query_params["access_token"] = access_token
-    st.query_params["code"] = "False"
+    st.query_params["code"] = "None"
 
 
 if "access_token" in st.query_params:
