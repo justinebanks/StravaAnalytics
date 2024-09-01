@@ -67,7 +67,7 @@ def run_server():
 
 
 
-# Opens Chrome To The OAuth Authorization Page
+# Opens Chrome To The OAuth Authorization Page OR Returns the URL To That Page if streamlit=True
 def get_authentication_code(client_id: int, redirect_url: str, streamlit=False):
 
     #redirect = "http://localhost:8000" if not streamlit else "http://localhost:8501"
