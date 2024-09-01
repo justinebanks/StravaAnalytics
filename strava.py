@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
+import webbrowser
 import requests
 import pandas as pd
 
@@ -104,10 +105,8 @@ def get_authentication_code(client_id: int, redirect_url: str, streamlit=False):
         return param_dict["code"]
 
     else:
-        os.system(f"start chrome.exe \"{url}\"")
-
-
-
+        #os.system(f"start chrome.exe \"{url}\"")
+        webbrowser.open_new_tab(url)
 
 
 # Gets The Access Token Using the Code From the "get_authorization_code" Function
