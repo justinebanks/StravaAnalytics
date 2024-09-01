@@ -8,7 +8,7 @@ client_id = 133058
 client_secret = "b14502a349e7fbcbfd435c975e6fa53102859201"
 
 if "code" not in st.query_params and "access_token" not in st.query_params:
-    url = get_authentication_code(client_id, "https://k9mwtd3ry7jej6abh9c8ho.streamlit.app/", True)
+    url = get_authentication_code(client_id, "https://strava-analytics.streamlit.app/", True)
     st.title("Strava API Data")
     st.write("Click the Following Hyper Link To Run Login To Strava with OAuth")
     st.write(f"<a href=\"{url}\">Login To Strava</a>", unsafe_allow_html=True)
